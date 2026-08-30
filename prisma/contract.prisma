@@ -1,0 +1,48 @@
+// use prisma-next
+
+model User {
+  id        String   @id @default(uuid())
+  fullName      String
+  email     String   @unique
+  password  String
+  todos     Todo[]
+  refreshTokens RefreshToken[] 
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  @@map("users")
+}
+
+model Todo {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  status      TodoStatus @default(PENDING)
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  @@index([userId])
+  @@index([status])
+  @@map("todos")
+}
+model RefreshToken {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt TimestamptzString
+  revokedAt TimestamptzString?
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+enum TodoStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}

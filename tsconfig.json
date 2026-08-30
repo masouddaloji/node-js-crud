@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@prisma/*": ["./prisma/*"]
+    },
+
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "rewriteRelativeImportExtensions": true,
+
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "types": ["node"],
+    "lib": ["ESNext"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+
+  "include": [
+    "src/**/*",
+    "prisma/**/*.ts",
+    "prisma.config.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
