@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run type-check && npm run lint && npm run format:check",
-    "contract:emit": "prisma contract emit"
+    "contract": "prisma contract emit"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
