@@ -1,4 +1,4 @@
-import { db } from "@prisma/db";
+import { db } from "#prisma/db.js";
 
 export type CreateRefreshTokenData = Pick<
   Parameters<typeof db.orm.public.RefreshToken.create>[0],

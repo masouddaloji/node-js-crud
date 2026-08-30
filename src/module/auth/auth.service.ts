@@ -1,16 +1,15 @@
+import { userRepository } from "#module/user/user.repository.js";
+import { ApiError } from "#utils/ApiError.js";
+import { hashPassword, verifyPassword } from "#utils/argon2.js";
 import {
-  ApiError,
   generateRefreshToken,
   getRefreshExpiryDate,
-  hashPassword,
   hashRefreshToken,
   signToken,
-  verifyPassword,
-} from "@/utils";
+} from "#utils/token.js";
 
-import { userRepository } from "../user/user.repository";
-import { authRepository } from "./auth.repository";
-import type { LoginUserInput, RegisterUserInput } from "./auth.validator";
+import { authRepository } from "./auth.repository.js";
+import type { LoginUserInput, RegisterUserInput } from "./auth.validator.js";
 
 const generateAuthTokens = async (userId: string) => {
   const accessToken = signToken({ userId, role: "USER" });

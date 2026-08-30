@@ -2,7 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 
 import jwt from "jsonwebtoken";
 
-import { env } from "../config/env.ts";
+import { env } from "#config/env.js";
 
 const ACCESS_SECRET = env.JWT_ACCESS_SECRET;
 

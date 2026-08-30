@@ -1,17 +1,19 @@
 {
   "name": "js-crud",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Production-ready Node.js CRUD API",
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "tsx --watch --env-file=.env src/app.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --env-file=.env dist/src/app.js",
+    "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run type-check && npm run lint && npm run format:check",
-    "contract": "prisma contract emit"
+    "contract": "prisma contract emit",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -26,10 +28,21 @@
     "type": "git",
     "url": "git+https://github.com/masouddaloji/node-js-crud.git"
   },
-  "keywords": [],
+  "keywords": [
+    "node",
+    "express",
+    "typescript",
+    "prisma",
+    "postgresql",
+    "rest-api"
+  ],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "imports": {
+    "#*": "./src/*",
+    "#prisma/*": "./prisma/*"
+  },
   "bugs": {
     "url": "https://github.com/masouddaloji/node-js-crud/issues"
   },
@@ -66,6 +79,7 @@
     "prisma": "^8.0.0-rc.12",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0"
   }

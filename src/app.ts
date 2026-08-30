@@ -1,12 +1,12 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { type Response } from "express";
+import express from "express";
 import helmet from "helmet";
 
-import { corsOptions } from "./config/cors.ts";
-import { env } from "./config/env.ts";
-import { errorHandler } from "./middlewares";
-import { authRoutes } from "./module/auth/auth.routes.ts";
+import { corsOptions } from "#config/cors.js";
+import { env } from "#config/env.js";
+import { errorHandler } from "#middlewares/error-handler.middleware.js";
+import { authRoutes } from "#module/auth/auth.routes.js";
 
 const port = env.PORT || 4000;
 
@@ -17,12 +17,10 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (_, res: Response) => {
-  res.status(200).send("hello");
-});
+app.use("/auth", authRoutes);
 
 app.use(errorHandler);
-app.use("/auth", authRoutes);
+
 app.listen(port, () => {
   console.log("app run in port 4000");
 });

@@ -1,4 +1,4 @@
-import { db } from "@prisma/db";
+import { db } from "#prisma/db.js";
 
 type CreateUserData = Pick<
   Parameters<typeof db.orm.public.User.create>[0],
