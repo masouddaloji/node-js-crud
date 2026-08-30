@@ -1,13 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
-import { ApiError, ValidationError } from "../utils/ApiError.ts";
 
-export const errorHandler = (
-  err: unknown,
-  req: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction,
-) => {
+import { ApiError, ValidationError } from "@/utils";
+
+export const errorHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof ApiError) {
     return res.status(err.statusCode).json({
       success: false,

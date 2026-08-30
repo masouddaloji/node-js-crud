@@ -1,18 +1,19 @@
+import { createHash, randomBytes } from "node:crypto";
+
 import jwt from "jsonwebtoken";
-import { randomBytes } from "node:crypto";
+
 import { env } from "../config/env.ts";
 
 const ACCESS_SECRET = env.JWT_ACCESS_SECRET;
-const REFRESH_EXPIRES_DAYS = 7;
 
-export const generateRefreshTokenString = () => {
+export const generateRefreshToken = () => {
   return randomBytes(32).toString("base64url");
 };
-console.log(randomBytes(64).toString("base64url"))
+
 export const getRefreshExpiryDate = () => {
   const date = new Date();
-  date.setDate(date.getDate() + REFRESH_EXPIRES_DAYS);
-  return date;
+  date.setDate(date.getDate() + 7);
+  return date.toISOString();
 };
 
 interface AccessTokenPayload {
@@ -20,12 +21,16 @@ interface AccessTokenPayload {
   role: string;
 }
 
-export const signAccessToken = (payload: AccessTokenPayload) => {
+export const signToken = (payload: AccessTokenPayload) => {
   return jwt.sign(payload, ACCESS_SECRET, {
     expiresIn: "30m",
   });
 };
 
-export const verifyAccessToken = (token: string) => {
+export const verifyToken = (token: string) => {
   return jwt.verify(token, ACCESS_SECRET) as AccessTokenPayload;
+};
+
+export const hashRefreshToken = (token: string) => {
+  return createHash("sha256").update(token).digest("base64url");
 };
