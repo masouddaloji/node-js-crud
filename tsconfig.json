@@ -30,14 +30,7 @@
     "resolveJsonModule": true
   },
 
-  "include": [
-    "src/**/*",
-    "prisma/**/*.ts",
-    "prisma.config.ts"
-  ],
+  "include": ["src/**/*", "prisma/**/*.ts", "prisma.config.ts"],
 
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }
