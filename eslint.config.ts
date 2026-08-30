@@ -5,7 +5,15 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["node_modules/**", "dist/**", "coverage/**", "generated/**", ".env", ".env.*"],
+    ignores: [
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "generated/**",
+      "migrations/**",
+      ".env",
+      ".env.*",
+    ],
   },
 
   eslint.configs.recommended,
