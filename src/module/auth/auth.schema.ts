@@ -6,10 +6,7 @@ const passwordSchema = z
   .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[a-z]/, "Password must contain at least one lowercase letter")
   .regex(/\d/, "Password must contain at least one number")
-  .regex(
-    /[!@#$%&*.:;]/,
-    "Password must contain at least one special character",
-  );
+  .regex(/[!@#$%&*.:;]/, "Password must contain at least one special character");
 export const registerUserSchema = z
   .object({
     fullName: z
@@ -17,9 +14,7 @@ export const registerUserSchema = z
       .trim()
       .min(5, "Full name must be at least 5 characters")
       .max(255, "Full name must be at most 255 characters"),
-    email: z
-      .email("Invalid email address")
-      .max(255, "Email must be at most 255 characters"),
+    email: z.email("Invalid email address").max(255, "Email must be at most 255 characters"),
     password: passwordSchema,
     confirmPassword: z
       .string()
@@ -34,9 +29,7 @@ export const registerUserSchema = z
 export type RegisterUserInput = z.infer<typeof registerUserSchema>;
 
 export const loginUserSchema = z.object({
-  email: z
-    .email("Invalid email address")
-    .max(255, "Email must be at most 255 characters"),
+  email: z.email("Invalid email address").max(255, "Email must be at most 255 characters"),
   password: passwordSchema,
 });
 

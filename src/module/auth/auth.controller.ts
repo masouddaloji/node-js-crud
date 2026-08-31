@@ -3,8 +3,8 @@ import type { RequestHandler } from "express";
 import { UnauthorizedError } from "#utils/ApiError.js";
 import { clearRefreshTokenCookie, setRefreshTokenCookie } from "#utils/cookie.js";
 
+import type { LoginUserInput, RegisterUserInput } from "./auth.schema.js";
 import { authService } from "./auth.service.js";
-import type { LoginUserInput, RegisterUserInput } from "./auth.validator.js";
 
 const register: RequestHandler = async (req, res) => {
   const userData: RegisterUserInput = req.body;

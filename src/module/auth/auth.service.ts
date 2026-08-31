@@ -1,5 +1,5 @@
 import { userRepository } from "#module/user/user.repository.js";
-import { ApiError } from "#utils/ApiError.js";
+import { ApiError, UnauthorizedError } from "#utils/ApiError.js";
 import { hashPassword, verifyPassword } from "#utils/argon2.js";
 import {
   generateRefreshToken,
@@ -9,7 +9,7 @@ import {
 } from "#utils/token.js";
 
 import { authRepository } from "./auth.repository.js";
-import type { LoginUserInput, RegisterUserInput } from "./auth.validator.js";
+import type { LoginUserInput, RegisterUserInput } from "./auth.schema.js";
 
 const generateAuthTokens = async (userId: string) => {
   const accessToken = signToken({ userId, role: "USER" });
@@ -40,17 +40,11 @@ const register = async ({ fullName, email, password }: RegisterUserInput) => {
 const login = async ({ email, password }: LoginUserInput) => {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: "Invalid email or password",
-    });
+    throw new UnauthorizedError("Invalid email or password");
   }
   const passwordMatch = await verifyPassword(password, user.password);
   if (!passwordMatch) {
-    throw new ApiError({
-      statusCode: 401,
-      message: "Invalid email or password",
-    });
+    throw new UnauthorizedError("Invalid email or password");
   }
 
   return generateAuthTokens(user.id);
@@ -65,10 +59,7 @@ const refreshToken = async (refreshToken: string) => {
   const tokenHash = hashRefreshToken(refreshToken);
   const storedToken = await authRepository.findRefreshToken(tokenHash);
   if (!storedToken || storedToken.revokedAt || new Date(storedToken.expiresAt) < new Date()) {
-    throw new ApiError({
-      statusCode: 401,
-      message: "Invalid refresh token",
-    });
+    throw new UnauthorizedError("Invalid refresh token");
   }
   const userId = storedToken.userId;
   await authRepository.revokeRefreshToken(tokenHash);

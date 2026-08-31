@@ -1,11 +1,11 @@
 import { db } from "#prisma/db.js";
 
-type CreateUserData = Pick<
+type UserData = Pick<
   Parameters<typeof db.orm.public.User.create>[0],
   "fullName" | "email" | "password"
 >;
 
-const create = (data: CreateUserData) => {
+const create = (data: UserData) => {
   return db.orm.public.User.create(data);
 };
 

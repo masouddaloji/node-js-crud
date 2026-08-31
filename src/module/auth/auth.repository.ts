@@ -1,10 +1,10 @@
 import { db } from "#prisma/db.js";
 
-export type CreateRefreshTokenData = Pick<
+type RefreshTokenData = Pick<
   Parameters<typeof db.orm.public.RefreshToken.create>[0],
   "userId" | "tokenHash" | "expiresAt"
 >;
-const createRefreshToken = (data: CreateRefreshTokenData) => {
+const createRefreshToken = (data: RefreshTokenData) => {
   return db.orm.public.RefreshToken.create(data);
 };
 const findRefreshToken = (tokenHash: string) => {
