@@ -18,7 +18,6 @@ export const getRefreshExpiryDate = () => {
 
 interface AccessTokenPayload {
   userId: string;
-  role: string;
 }
 
 export const signToken = (payload: AccessTokenPayload) => {

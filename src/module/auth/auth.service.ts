@@ -12,7 +12,7 @@ import { authRepository } from "./auth.repository.js";
 import type { LoginUserInput, RegisterUserInput } from "./auth.schema.js";
 
 const generateAuthTokens = async (userId: string) => {
-  const accessToken = signToken({ userId, role: "USER" });
+  const accessToken = signToken({ userId });
   const refreshToken = generateRefreshToken();
 
   await authRepository.createRefreshToken({

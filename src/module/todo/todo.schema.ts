@@ -19,3 +19,11 @@ export const createTodoSchema = z.object({
 });
 
 export type CreateTodoInput = z.infer<typeof createTodoSchema>;
+
+export const updateTodoSchema = createTodoSchema
+  .partial()
+  .refine((data) => Object.keys(data).length > 0, {
+    error: "At least one field must be provided",
+  });
+
+export type UpdateTodoInput = z.infer<typeof updateTodoSchema>;
