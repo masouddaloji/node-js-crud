@@ -7,6 +7,7 @@ import { corsOptions } from "#config/cors.js";
 import { env } from "#config/env.js";
 import { errorHandler } from "#middlewares/error-handler.middleware.js";
 import { authRoutes } from "#module/auth/auth.routes.js";
+import { todoRouter } from "#module/todo/todo.routes.js";
 
 const port = env.PORT || 4000;
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/todo", todoRouter);
 
 app.use(errorHandler);
 

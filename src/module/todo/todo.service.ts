@@ -38,7 +38,6 @@ const update = async ({ id, userId, data }: UpdateTodoParams) => {
 
 const remove = async ({ id, userId }: DeleteTodoParams) => {
   const deletedTodo = await todoRepository.delete({ id, userId });
-
   if (!deletedTodo) {
     throw new NotFoundError("Todo not found");
   }
@@ -58,6 +57,7 @@ const findByStatus = async ({ status, userId }: FindByStatusParams) => {
   const todos = await todoRepository.findByStatus({ userId, status });
   return todos;
 };
+
 const findAll = async (userId: string) => {
   const todos = await todoRepository.findAll(userId);
   return todos;
