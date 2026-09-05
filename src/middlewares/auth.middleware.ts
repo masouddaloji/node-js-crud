@@ -2,23 +2,18 @@ import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
 import { UnauthorizedError } from "#utils/ApiError.js";
+import { ACCESS_COOKIE_NAME } from "#utils/cookie.js";
 import { verifyToken } from "#utils/token.js";
 
 export const authMiddleware: RequestHandler = (req, _res, next) => {
-  const authorization = req.headers.authorization;
+  const accessToken = req.cookies[ACCESS_COOKIE_NAME];
 
-  if (!authorization) {
+  if (!accessToken) {
     throw new UnauthorizedError("Authentication required");
   }
 
-  const [scheme, token] = authorization.split(" ");
-
-  if (scheme !== "Bearer" || !token) {
-    throw new UnauthorizedError("Invalid authorization header");
-  }
-
   try {
-    req.user = verifyToken(token);
+    req.user = verifyToken(accessToken);
 
     next();
   } catch (error) {
