@@ -9,7 +9,7 @@ export const todoIdParamsSchema = z.object({
 });
 
 export const todoStatusParamsSchema = z.object({
-  status: todoStatusSchema,
+  status: todoStatusSchema.optional(),
 });
 
 export const createTodoSchema = z.object({
