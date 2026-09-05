@@ -18,7 +18,7 @@ export type FindByIdParams = {
 };
 export type FindByStatusParams = {
   userId: string;
-  status: TodoStatus;
+  status?: TodoStatus;
 };
 
 export type CreateTodoParams = {

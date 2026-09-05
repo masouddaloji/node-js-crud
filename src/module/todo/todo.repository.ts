@@ -25,7 +25,7 @@ const findById = ({ id, userId }: FindByIdParams) => {
 };
 
 const findByStatus = ({ userId, status }: FindByStatusParams) => {
-  return db.orm.public.Todo.where({ userId, status }).all();
+  return db.orm.public.Todo.where({ userId, ...(status && { status }) }).all();
 };
 
 const findAll = (userId: string) => {
