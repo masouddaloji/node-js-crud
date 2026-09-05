@@ -20,6 +20,10 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/api-docs/openapi.json", (_req, res) => {
+  res.json(swaggerSpec);
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/auth", authRoutes);
