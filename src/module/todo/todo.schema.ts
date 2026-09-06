@@ -55,15 +55,7 @@ export const todoResponseSchema = z.object({
 
 export type TodoResponse = z.infer<typeof todoResponseSchema>;
 
-export const todoResponseEnvelopeSchema = z.object({
-  data: todoResponseSchema,
-});
-
 export const todoMutationResponseSchema = z.object({
   message: z.string(),
   data: todoResponseSchema,
-});
-
-export const todoListResponseSchema = z.object({
-  data: z.array(todoResponseSchema),
 });

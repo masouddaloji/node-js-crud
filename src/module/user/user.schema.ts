@@ -7,7 +7,3 @@ export const userResponseSchema = z.object({
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
-
-export const userProfileResponseSchema = z.object({
-  data: userResponseSchema,
-});

@@ -1,8 +1,8 @@
 import { registry } from "#config/openapi.js";
 
-import { userProfileResponseSchema } from "./user.schema.js";
+import { userResponseSchema } from "./user.schema.js";
 
-const UserProfileResponse = registry.register("UserProfileResponse", userProfileResponseSchema);
+const UserProfileResponse = registry.register("UserProfileResponse", userResponseSchema);
 
 registry.registerPath({
   method: "get",

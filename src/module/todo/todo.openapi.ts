@@ -3,9 +3,8 @@ import { registry } from "#config/openapi.js";
 import {
   createTodoSchema,
   todoIdParamsSchema,
-  todoListResponseSchema,
   todoMutationResponseSchema,
-  todoResponseEnvelopeSchema,
+  todoResponseSchema,
   todoStatusParamsSchema,
   updateTodoSchema,
 } from "./todo.schema.js";
@@ -22,11 +21,11 @@ const TodoIdParams = registry.register("TodoIdParams", todoIdParamsSchema);
 
 const TodoStatusParams = registry.register("TodoStatusParams", todoStatusParamsSchema);
 
-const TodoResponseEnvelope = registry.register("TodoResponseEnvelope", todoResponseEnvelopeSchema);
+const TodoResponse = registry.register("TodoResponse", todoResponseSchema);
 
 const TodoMutationResponse = registry.register("TodoMutationResponse", todoMutationResponseSchema);
 
-const TodoListResponse = registry.register("TodoListResponse", todoListResponseSchema);
+const TodoListResponse = registry.register("TodoListResponse", todoResponseSchema.array());
 
 /*
  * POST /todo
@@ -106,7 +105,6 @@ registry.registerPath({
         },
       },
     },
-
     400: {
       description: "Validation error.",
     },
@@ -210,7 +208,6 @@ registry.registerPath({
     400: {
       description: "Invalid todo status.",
     },
-
     401: {
       description: "Authentication required.",
     },
@@ -240,15 +237,13 @@ registry.registerPath({
       description: "Todo retrieved successfully.",
       content: {
         "application/json": {
-          schema: TodoResponseEnvelope,
+          schema: TodoResponse,
         },
       },
     },
-
     401: {
       description: "Authentication required.",
     },
-
     404: {
       description: "Todo not found.",
     },
