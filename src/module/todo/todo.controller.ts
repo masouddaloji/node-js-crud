@@ -29,7 +29,7 @@ const remove: RequestHandler<TodoIdParams> = async (req, res) => {
   const userId = req.user!.userId;
   const id = req.params.id;
   await todoService.delete({ id, userId });
-  res.status(204).json({ message: "Todo removed successfully" });
+  res.status(204).send();
 };
 
 const findById: RequestHandler<TodoIdParams> = async (req, res) => {

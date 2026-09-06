@@ -15,13 +15,10 @@ const LoginUserRequest = registry.register("LoginUserRequest", loginUserSchema);
 registry.registerPath({
   method: "post",
   path: "/auth/register",
-
   tags: ["Auth"],
-
+  operationId: "registerUser",
   summary: "Register a new user",
-
   description: "Creates a new user account and returns an access token.",
-
   request: {
     body: {
       required: true,
@@ -32,7 +29,6 @@ registry.registerPath({
       },
     },
   },
-
   responses: {
     201: {
       description: "User registered successfully.",
@@ -67,13 +63,10 @@ registry.registerPath({
 registry.registerPath({
   method: "post",
   path: "/auth/login",
-
   tags: ["Auth"],
-
+  operationId: "loginUser",
   summary: "Login user",
-
   description: "Authenticates a user and returns an access token.",
-
   request: {
     body: {
       required: true,
@@ -84,7 +77,6 @@ registry.registerPath({
       },
     },
   },
-
   responses: {
     200: {
       description: "Login successful.",
@@ -119,20 +111,16 @@ registry.registerPath({
 registry.registerPath({
   method: "post",
   path: "/auth/refresh",
-
   tags: ["Auth"],
-
+  operationId: "refreshAccessToken",
   summary: "Refresh access token",
-
   description:
     "Generates a new access token using the refresh token stored in the HTTP-only cookie.",
-
   security: [
     {
       refreshTokenAuth: [],
     },
   ],
-
   responses: {
     200: {
       description: "Access token refreshed successfully.",
@@ -163,19 +151,15 @@ registry.registerPath({
 registry.registerPath({
   method: "post",
   path: "/auth/logout",
-
   tags: ["Auth"],
-
+  operationId: "logoutUser",
   summary: "Logout user",
-
   description: "Revokes the current refresh token and clears the refresh token cookie.",
-
   security: [
     {
       refreshTokenAuth: [],
     },
   ],
-
   responses: {
     200: {
       description: "Logged out successfully.",

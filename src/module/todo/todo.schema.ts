@@ -9,7 +9,7 @@ export const todoIdParamsSchema = z.object({
 });
 
 export const todoStatusParamsSchema = z.object({
-  status: todoStatusSchema.optional(),
+  status: todoStatusSchema,
 });
 
 export const createTodoSchema = z.object({
@@ -43,3 +43,27 @@ export const updateTodoSchema = createTodoSchema
 export type UpdateTodoInput = z.infer<typeof updateTodoSchema>;
 
 export type TodoStatus = z.infer<typeof todoStatusSchema>;
+
+export const todoResponseSchema = z.object({
+  id: z.uuid(),
+  title: z.string(),
+  description: z.string().nullable(),
+  status: todoStatusSchema,
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+});
+
+export type TodoResponse = z.infer<typeof todoResponseSchema>;
+
+export const todoResponseEnvelopeSchema = z.object({
+  data: todoResponseSchema,
+});
+
+export const todoMutationResponseSchema = z.object({
+  message: z.string(),
+  data: todoResponseSchema,
+});
+
+export const todoListResponseSchema = z.object({
+  data: z.array(todoResponseSchema),
+});

@@ -15,7 +15,9 @@ const findByEmail = (email: string) => {
   }).first();
 };
 const findById = (id: string) => {
-  return db.orm.public.User.where({ id }).first();
+  return db.orm.public.User.where({ id })
+    .select("id", "fullName", "email", "createdAt", "updatedAt")
+    .first();
 };
 
 export const userRepository = { create, findByEmail, findById };

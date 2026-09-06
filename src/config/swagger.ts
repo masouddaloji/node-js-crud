@@ -1,5 +1,6 @@
 import "#module/auth/auth.openapi.js";
 import "#module/todo/todo.openapi.js";
+import "#module/user/user.openapi.js";
 
 import { OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
 
