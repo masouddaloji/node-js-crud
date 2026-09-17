@@ -10,6 +10,8 @@ import { swaggerSpec } from "#config/swagger.js";
 import { errorHandler } from "#middlewares/error-handler.middleware.js";
 import { authRoutes } from "#module/auth/auth.routes.js";
 import { todoRouter } from "#module/todo/todo.routes.js";
+import { userRoute } from "#module/user/user.route.js";
+import { db } from "#prisma/db.js";
 
 const port = env.PORT || 4000;
 
@@ -27,10 +29,20 @@ app.get("/api-docs/openapi.json", (_req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/auth", authRoutes);
+app.use("/user", userRoute);
 app.use("/todo", todoRouter);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log("app run in port 4000");
-});
+const startServer = async () => {
+  try {
+    await db.connect();
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to connect to database:", error);
+  }
+};
+
+startServer();

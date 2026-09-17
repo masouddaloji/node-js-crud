@@ -39,10 +39,7 @@ export class ForbiddenError extends ApiError {
 }
 
 export class ValidationError extends ApiError {
-  public readonly fields: Record<string, string[]>;
-
-  constructor(fields: Record<string, string[]>) {
-    super({ statusCode: 422, message: "Validation failed" });
-    this.fields = fields;
+  constructor(message: string = "Validation failed") {
+    super({ statusCode: 422, message });
   }
 }

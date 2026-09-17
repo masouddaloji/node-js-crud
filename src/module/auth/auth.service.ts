@@ -42,7 +42,7 @@ const login = async ({ email, password }: LoginUserInput) => {
   if (!user) {
     throw new UnauthorizedError("Invalid email or password");
   }
-  const passwordMatch = await verifyPassword(password, user.password);
+  const passwordMatch = await verifyPassword(user.password, password);
   if (!passwordMatch) {
     throw new UnauthorizedError("Invalid email or password");
   }
