@@ -1,3 +1,5 @@
+import { or } from "@prisma/orm-postgres/orm-client";
+
 import { db } from "#prisma/db.js";
 
 import type {
@@ -25,26 +27,18 @@ const findById = ({ id, userId }: FindByIdParams) => {
 };
 
 const findAll = ({ userId, status, search, sortOrder }: FindAllParams) => {
-  return db.orm.public.Todo.where({
+  let query = db.orm.public.Todo.where({
     userId,
     ...(status && { status }),
-    ...(search && {
-      or: [
-        {
-          title: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-        {
-          description: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-      ],
-    }),
-  })
+  });
+
+  if (search) {
+    query = query.where((todo) =>
+      or(todo.title.ilike(`%${search}%`), todo.description.ilike(`%${search}%`)),
+    );
+  }
+
+  return query
     .orderBy((todo) => (sortOrder === "desc" ? todo.createdAt.desc() : todo.createdAt.asc()))
     .all();
 };
