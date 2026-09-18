@@ -2,8 +2,8 @@ import { db } from "#prisma/db.js";
 
 import type {
   DeleteTodoParams,
+  FindAllParams,
   FindByIdParams,
-  FindByStatusParams,
   TodoData,
   UpdateParams,
 } from "./type.js";
@@ -24,12 +24,29 @@ const findById = ({ id, userId }: FindByIdParams) => {
   return db.orm.public.Todo.where({ id, userId }).first();
 };
 
-const findByStatus = ({ userId, status }: FindByStatusParams) => {
-  return db.orm.public.Todo.where({ userId, ...(status && { status }) }).all();
-};
-
-const findAll = (userId: string) => {
-  return db.orm.public.Todo.where({ userId }).all();
+const findAll = ({ userId, status, search, sortOrder }: FindAllParams) => {
+  return db.orm.public.Todo.where({
+    userId,
+    ...(status && { status }),
+    ...(search && {
+      or: [
+        {
+          title: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+      ],
+    }),
+  })
+    .orderBy((todo) => (sortOrder === "desc" ? todo.createdAt.desc() : todo.createdAt.asc()))
+    .all();
 };
 
 export const todoRepository = {
@@ -37,6 +54,5 @@ export const todoRepository = {
   update,
   delete: remove,
   findById,
-  findByStatus,
   findAll,
 };

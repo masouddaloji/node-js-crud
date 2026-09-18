@@ -1,14 +1,10 @@
 import type { RequestHandler } from "express";
 
 import { todoService } from "./todo.service.js";
-import type { TodoStatus } from "./type.js";
+import type { FindAllParams } from "./type.js";
 
 type TodoIdParams = {
   id: string;
-};
-
-type TodoStatusParams = {
-  status: TodoStatus;
 };
 
 const create: RequestHandler = async (req, res) => {
@@ -38,15 +34,11 @@ const findById: RequestHandler<TodoIdParams> = async (req, res) => {
   const data = await todoService.findById({ userId, id });
   res.status(200).json(data);
 };
-const findByStatus: RequestHandler<TodoStatusParams> = async (req, res) => {
+
+const findAll: RequestHandler<FindAllParams> = async (req, res) => {
   const userId = req.user!.userId;
-  const status = req.params.status;
-  const data = await todoService.findByStatus({ status, userId });
-  res.status(200).json(data);
-};
-const findAll: RequestHandler = async (req, res) => {
-  const userId = req.user!.userId;
-  const data = await todoService.findAll(userId);
+  const { search, status, sortOrder } = req.params;
+  const data = await todoService.findAll({ userId, search, status, sortOrder });
   res.status(200).json(data);
 };
 
@@ -55,6 +47,5 @@ export const todoController = {
   update,
   delete: remove,
   findById,
-  findByStatus,
   findAll,
 };

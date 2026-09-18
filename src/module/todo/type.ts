@@ -16,9 +16,12 @@ export type FindByIdParams = {
   userId: string;
   id: string;
 };
-export type FindByStatusParams = {
+
+export type FindAllParams = {
   userId: string;
+  search?: string;
   status?: TodoStatus;
+  sortOrder: "asc" | "desc";
 };
 
 export type CreateTodoParams = {

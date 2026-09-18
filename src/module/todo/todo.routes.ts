@@ -12,7 +12,6 @@ router.post("/", validateSchema(createTodoSchema), todoController.create);
 router.patch("/:id", validateSchema(updateTodoSchema), todoController.update);
 router.delete("/:id", todoController.delete);
 router.get("/", todoController.findAll);
-router.get("/status/:status", todoController.findByStatus);
 router.get("/:id", todoController.findById);
 
 export const todoRouter = router;

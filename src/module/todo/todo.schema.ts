@@ -55,6 +55,21 @@ export const todoResponseSchema = z.object({
 
 export type TodoResponse = z.infer<typeof todoResponseSchema>;
 
+export const findAllTodoSchema = z.object({
+  search: z
+    .string()
+    .trim()
+    .min(1, "Search cannot be empty")
+    .max(100, "Search must be at most 100 characters")
+    .optional(),
+
+  status: todoStatusSchema.optional(),
+
+  sortOrder: z.enum(["asc", "desc"]).default("desc"),
+});
+
+export type FindAllTodoInput = z.infer<typeof findAllTodoSchema>;
+
 export const todoMutationResponseSchema = z.object({
   message: z.string(),
   data: todoResponseSchema,

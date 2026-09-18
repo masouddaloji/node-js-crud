@@ -5,8 +5,8 @@ import { todoRepository } from "./todo.repository.js";
 import type {
   CreateTodoParams,
   DeleteTodoParams,
+  FindAllParams,
   FindByIdParams,
-  FindByStatusParams,
   UpdateTodoParams,
 } from "./type.js";
 
@@ -53,13 +53,8 @@ const findById = async ({ userId, id }: FindByIdParams) => {
   return todo;
 };
 
-const findByStatus = async ({ status, userId }: FindByStatusParams) => {
-  const todos = await todoRepository.findByStatus({ userId, status });
-  return todos;
-};
-
-const findAll = async (userId: string) => {
-  const todos = await todoRepository.findAll(userId);
+const findAll = async ({ userId, status, search, sortOrder }: FindAllParams) => {
+  const todos = await todoRepository.findAll({ userId, status, search, sortOrder });
   return todos;
 };
 
@@ -68,6 +63,5 @@ export const todoService = {
   update,
   delete: remove,
   findById,
-  findByStatus,
   findAll,
 };

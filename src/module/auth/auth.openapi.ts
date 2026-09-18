@@ -1,17 +1,31 @@
 import { registry } from "#config/openapi.js";
 
-import { loginUserSchema, registerUserSchema } from "./auth.schema.js";
+import { authTokenResponseSchema, loginUserSchema, registerUserSchema } from "./auth.schema.js";
 
 /*
- * Reusable request schemas
+ * Reusable schemas
  */
+
 const RegisterUserRequest = registry.register("RegisterUserRequest", registerUserSchema);
 
 const LoginUserRequest = registry.register("LoginUserRequest", loginUserSchema);
 
+const AuthTokenResponse = registry.register("AuthTokenResponse", authTokenResponseSchema);
+
+/*
+ * Reusable security
+ */
+
+const refreshTokenSecurity = [
+  {
+    refreshTokenAuth: [],
+  },
+];
+
 /*
  * POST /auth/register
  */
+
 registry.registerPath({
   method: "post",
   path: "/auth/register",
@@ -34,15 +48,7 @@ registry.registerPath({
       description: "User registered successfully.",
       content: {
         "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              accessToken: {
-                type: "string",
-              },
-            },
-            required: ["accessToken"],
-          },
+          schema: AuthTokenResponse,
         },
       },
     },
@@ -60,6 +66,7 @@ registry.registerPath({
 /*
  * POST /auth/login
  */
+
 registry.registerPath({
   method: "post",
   path: "/auth/login",
@@ -82,15 +89,7 @@ registry.registerPath({
       description: "Login successful.",
       content: {
         "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              accessToken: {
-                type: "string",
-              },
-            },
-            required: ["accessToken"],
-          },
+          schema: AuthTokenResponse,
         },
       },
     },
@@ -108,6 +107,7 @@ registry.registerPath({
 /*
  * POST /auth/refresh
  */
+
 registry.registerPath({
   method: "post",
   path: "/auth/refresh",
@@ -116,25 +116,13 @@ registry.registerPath({
   summary: "Refresh access token",
   description:
     "Generates a new access token using the refresh token stored in the HTTP-only cookie.",
-  security: [
-    {
-      refreshTokenAuth: [],
-    },
-  ],
+  security: refreshTokenSecurity,
   responses: {
     200: {
       description: "Access token refreshed successfully.",
       content: {
         "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              accessToken: {
-                type: "string",
-              },
-            },
-            required: ["accessToken"],
-          },
+          schema: AuthTokenResponse,
         },
       },
     },
@@ -148,6 +136,7 @@ registry.registerPath({
 /*
  * POST /auth/logout
  */
+
 registry.registerPath({
   method: "post",
   path: "/auth/logout",
@@ -155,11 +144,7 @@ registry.registerPath({
   operationId: "logoutUser",
   summary: "Logout user",
   description: "Revokes the current refresh token and clears the refresh token cookie.",
-  security: [
-    {
-      refreshTokenAuth: [],
-    },
-  ],
+  security: refreshTokenSecurity,
   responses: {
     200: {
       description: "Logged out successfully.",

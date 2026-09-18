@@ -5,13 +5,8 @@ import {
   todoIdParamsSchema,
   todoMutationResponseSchema,
   todoResponseSchema,
-  todoStatusParamsSchema,
   updateTodoSchema,
 } from "./todo.schema.js";
-
-/*
- * Reusable schemas
- */
 
 const CreateTodoRequest = registry.register("CreateTodoRequest", createTodoSchema);
 
@@ -19,15 +14,19 @@ const UpdateTodoRequest = registry.register("UpdateTodoRequest", updateTodoSchem
 
 const TodoIdParams = registry.register("TodoIdParams", todoIdParamsSchema);
 
-const TodoStatusParams = registry.register("TodoStatusParams", todoStatusParamsSchema);
-
 const TodoResponse = registry.register("TodoResponse", todoResponseSchema);
 
 const TodoMutationResponse = registry.register("TodoMutationResponse", todoMutationResponseSchema);
 
 const TodoListResponse = registry.register("TodoListResponse", todoResponseSchema.array());
 
-/*
+const todoSecurity = [
+  {
+    bearerAuth: [],
+  },
+];
+
+/**
  * POST /todo
  */
 registry.registerPath({
@@ -37,11 +36,8 @@ registry.registerPath({
   operationId: "createTodo",
   summary: "Create a todo",
   description: "Creates a new todo for the authenticated user.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+  security: todoSecurity,
+
   request: {
     body: {
       required: true,
@@ -52,6 +48,7 @@ registry.registerPath({
       },
     },
   },
+
   responses: {
     201: {
       description: "Todo created successfully.",
@@ -70,7 +67,68 @@ registry.registerPath({
   },
 });
 
-/*
+/**
+ * GET /todo
+ */
+registry.registerPath({
+  method: "get",
+  path: "/todo",
+  tags: ["Todo"],
+  operationId: "getTodos",
+  summary: "Get todos",
+  description: "Returns all todos owned by the authenticated user.",
+  security: todoSecurity,
+
+  responses: {
+    200: {
+      description: "Todos retrieved successfully.",
+      content: {
+        "application/json": {
+          schema: TodoListResponse,
+        },
+      },
+    },
+    401: {
+      description: "Authentication required.",
+    },
+  },
+});
+
+/**
+ * GET /todo/{id}
+ */
+registry.registerPath({
+  method: "get",
+  path: "/todo/{id}",
+  tags: ["Todo"],
+  operationId: "getTodo",
+  summary: "Get a todo by ID",
+  description: "Returns a single todo owned by the authenticated user.",
+  security: todoSecurity,
+
+  request: {
+    params: TodoIdParams,
+  },
+
+  responses: {
+    200: {
+      description: "Todo retrieved successfully.",
+      content: {
+        "application/json": {
+          schema: TodoResponse,
+        },
+      },
+    },
+    401: {
+      description: "Authentication required.",
+    },
+    404: {
+      description: "Todo not found.",
+    },
+  },
+});
+
+/**
  * PATCH /todo/{id}
  */
 registry.registerPath({
@@ -80,11 +138,8 @@ registry.registerPath({
   operationId: "updateTodo",
   summary: "Update a todo",
   description: "Updates an existing todo owned by the authenticated user.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+  security: todoSecurity,
+
   request: {
     params: TodoIdParams,
     body: {
@@ -96,6 +151,7 @@ registry.registerPath({
       },
     },
   },
+
   responses: {
     200: {
       description: "Todo updated successfully.",
@@ -117,7 +173,7 @@ registry.registerPath({
   },
 });
 
-/*
+/**
  * DELETE /todo/{id}
  */
 registry.registerPath({
@@ -127,119 +183,15 @@ registry.registerPath({
   operationId: "deleteTodo",
   summary: "Delete a todo",
   description: "Deletes a todo owned by the authenticated user.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+  security: todoSecurity,
+
   request: {
     params: TodoIdParams,
   },
+
   responses: {
     204: {
       description: "Todo deleted successfully.",
-    },
-    401: {
-      description: "Authentication required.",
-    },
-    404: {
-      description: "Todo not found.",
-    },
-  },
-});
-
-/*
- * GET /todo
- */
-registry.registerPath({
-  method: "get",
-  path: "/todo",
-  tags: ["Todo"],
-  operationId: "getTodos",
-  summary: "Get todos",
-  description: "Returns all todos owned by the authenticated user.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
-  responses: {
-    200: {
-      description: "Todos retrieved successfully.",
-      content: {
-        "application/json": {
-          schema: TodoListResponse,
-        },
-      },
-    },
-    401: {
-      description: "Authentication required.",
-    },
-  },
-});
-
-/*
- * GET /todo/status/{status}
- */
-registry.registerPath({
-  method: "get",
-  path: "/todo/status/{status}",
-  tags: ["Todo"],
-  operationId: "getTodosByStatus",
-  summary: "Get todos by status",
-  description: "Returns todos filtered by status.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
-  request: {
-    params: TodoStatusParams,
-  },
-  responses: {
-    200: {
-      description: "Todos retrieved successfully.",
-      content: {
-        "application/json": {
-          schema: TodoListResponse,
-        },
-      },
-    },
-    400: {
-      description: "Invalid todo status.",
-    },
-    401: {
-      description: "Authentication required.",
-    },
-  },
-});
-
-/*
- * GET /todo/{id}
- */
-registry.registerPath({
-  method: "get",
-  path: "/todo/{id}",
-  tags: ["Todo"],
-  operationId: "getTodo",
-  summary: "Get a todo by ID",
-  description: "Returns a single todo owned by the authenticated user.",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
-  request: {
-    params: TodoIdParams,
-  },
-  responses: {
-    200: {
-      description: "Todo retrieved successfully.",
-      content: {
-        "application/json": {
-          schema: TodoResponse,
-        },
-      },
     },
     401: {
       description: "Authentication required.",
