@@ -25,10 +25,6 @@
             "codecId": "pg/text@1",
             "members": [
               {
-                "name": "PENDING",
-                "value": "PENDING"
-              },
-              {
                 "name": "IN_PROGRESS",
                 "value": "IN_PROGRESS"
               },
@@ -414,8 +410,8 @@
             "todos": {
               "checks": [
                 {
-                  "expression": "\"status\" IN ('PENDING', 'IN_PROGRESS', 'COMPLETED')",
-                  "name": "todos_status_check_c95d195d",
+                  "expression": "\"status\" IN ('IN_PROGRESS', 'COMPLETED')",
+                  "name": "todos_status_check_d33d8563",
                   "prefix": "todos_status_check"
                 }
               ],
@@ -443,7 +439,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "PENDING"
+                    "value": "IN_PROGRESS"
                   },
                   "nativeType": "text",
                   "nullable": false,
@@ -556,7 +552,7 @@
           "valueSet": {
             "TodoStatus": {
               "kind": "valueSet",
-              "values": ["PENDING", "IN_PROGRESS", "COMPLETED"]
+              "values": ["IN_PROGRESS", "COMPLETED"]
             }
           }
         },
@@ -564,7 +560,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "529c1252373695ae8b118cb9bf3461f548eb4b4916797a02fa867fee06a4eca9"
+    "storageHash": "2372fb00d5cdfc3cc021d97c8c977437c77090de7baaa95a9f5265e313406b4b"
   },
   "execution": {
     "executionHash": "d986cbfbbab00812101d2d66d39a4b0f96d4f03b8bfd47cea86dc7b1a2e8424e",
