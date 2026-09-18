@@ -2,6 +2,7 @@ import { registry } from "#config/openapi.js";
 
 import {
   createTodoSchema,
+  findAllTodoSchema,
   todoIdParamsSchema,
   todoMutationResponseSchema,
   todoResponseSchema,
@@ -58,9 +59,11 @@ registry.registerPath({
         },
       },
     },
+
     400: {
       description: "Validation error.",
     },
+
     401: {
       description: "Authentication required.",
     },
@@ -76,8 +79,12 @@ registry.registerPath({
   tags: ["Todo"],
   operationId: "getTodos",
   summary: "Get todos",
-  description: "Returns all todos owned by the authenticated user.",
+  description: "Returns todos owned by the authenticated user.",
   security: todoSecurity,
+
+  request: {
+    query: findAllTodoSchema,
+  },
 
   responses: {
     200: {
@@ -88,6 +95,11 @@ registry.registerPath({
         },
       },
     },
+
+    400: {
+      description: "Invalid query parameters.",
+    },
+
     401: {
       description: "Authentication required.",
     },
@@ -119,9 +131,11 @@ registry.registerPath({
         },
       },
     },
+
     401: {
       description: "Authentication required.",
     },
+
     404: {
       description: "Todo not found.",
     },
@@ -142,6 +156,7 @@ registry.registerPath({
 
   request: {
     params: TodoIdParams,
+
     body: {
       required: true,
       content: {
@@ -161,12 +176,15 @@ registry.registerPath({
         },
       },
     },
+
     400: {
       description: "Validation error.",
     },
+
     401: {
       description: "Authentication required.",
     },
+
     404: {
       description: "Todo not found.",
     },
@@ -193,9 +211,11 @@ registry.registerPath({
     204: {
       description: "Todo deleted successfully.",
     },
+
     401: {
       description: "Authentication required.",
     },
+
     404: {
       description: "Todo not found.",
     },

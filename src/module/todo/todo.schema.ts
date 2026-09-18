@@ -8,10 +8,6 @@ export const todoIdParamsSchema = z.object({
   id: z.uuid("Todo ID must be a valid UUID"),
 });
 
-export const todoStatusParamsSchema = z.object({
-  status: todoStatusSchema,
-});
-
 export const createTodoSchema = z.object({
   title: z
     .string({
