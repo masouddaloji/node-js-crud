@@ -11,6 +11,7 @@ export default tseslint.config(
       "coverage/**",
       "generated/**",
       "migrations/**",
+      "prisma/**",
       ".env",
       ".env.*",
     ],
