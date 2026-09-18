@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const todoStatusSchema = z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"], {
+export const todoStatusSchema = z.enum(["IN_PROGRESS", "COMPLETED"], {
   error: "Invalid todo status",
 });
 

@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 
+import { findAllTodoSchema } from "./todo.schema.js";
 import { todoService } from "./todo.service.js";
 import type { FindAllParams } from "./type.js";
 
@@ -37,7 +38,7 @@ const findById: RequestHandler<TodoIdParams> = async (req, res) => {
 
 const findAll: RequestHandler<FindAllParams> = async (req, res) => {
   const userId = req.user!.userId;
-  const { search, status, sortOrder } = req.params;
+  const { search, status, sortOrder } = findAllTodoSchema.parse(req.query);
   const data = await todoService.findAll({ userId, search, status, sortOrder });
   res.status(200).json(data);
 };
